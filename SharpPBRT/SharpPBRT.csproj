@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Matrix4x4.cs" />
+    <Compile Include="Core\Quaternion.cs" />
     <Compile Include="Core\Transform.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Core\Geometry\BBox.cs" />

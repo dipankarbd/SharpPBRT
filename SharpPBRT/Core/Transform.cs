@@ -10,6 +10,7 @@ namespace SharpPBRT.Core
     public class Transform
     {
         private Matrix4x4 m, mInv;
+        public Matrix4x4 M { get { return m; } }
         public Transform()
         {
 
