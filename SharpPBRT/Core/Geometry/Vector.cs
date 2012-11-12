@@ -50,7 +50,7 @@ namespace SharpPBRT.Core.Geometry
         }
         public static Vector operator /(Vector v, float f)
         {
-            if (f == 0) throw new InvalidOperationException();
+            if (f == 0.0f) throw new InvalidOperationException();
             float inv = 1.0f / f;
             return new Vector(v.x * inv, v.y * inv, v.z * inv);
         }
@@ -65,6 +65,18 @@ namespace SharpPBRT.Core.Geometry
         public float Length()
         {
             return (float)Math.Sqrt(LengthSquared());
+        }
+        public float this[int index]
+        {
+            get
+            {
+                if (index < 0 || index > 2) throw new ArgumentException();
+
+                if (index == 0) return x;
+                else if (index == 1) return y;
+                else if (index == 2) return z;
+                else return 0;
+            }
         }
         public override bool Equals(object obj)
         {

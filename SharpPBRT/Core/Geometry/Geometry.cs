@@ -59,12 +59,12 @@ namespace SharpPBRT.Core.Geometry
         {
             if (n.HasNaNs() || v.HasNaNs()) throw new InvalidOperationException();
             return n.x * v.x + n.y * v.y + n.z * v.z;
-        } 
+        }
         public static float Dot(Vector v, Normal n)
         {
             if (v.HasNaNs() || n.HasNaNs()) throw new InvalidOperationException();
             return v.x * n.x + v.y * n.y + v.z * n.z;
-        } 
+        }
         public static float Dot(Normal n1, Normal n2)
         {
             if (n1.HasNaNs() || n2.HasNaNs()) throw new InvalidOperationException();
@@ -82,27 +82,79 @@ namespace SharpPBRT.Core.Geometry
         {
             if (v.HasNaNs() || n.HasNaNs()) throw new InvalidOperationException();
             return Math.Abs(v.x * n.x + v.y * n.y + v.z * n.z);
-        } 
+        }
         public static float AbsDot(Normal n1, Normal n2)
         {
             if (n1.HasNaNs() || n2.HasNaNs()) throw new InvalidOperationException();
             return Math.Abs(n1.x * n2.x + n1.y * n2.y + n1.z * n2.z);
-        } 
+        }
         public static Normal Faceforward(Normal n, Vector v)
         {
             return (Dot(n, v) < 0.0f) ? -n : n;
-        } 
+        }
         public static Normal Faceforward(Normal n1, Normal n2)
         {
             return (Dot(n1, n2) < 0.0f) ? -n1 : n1;
-        } 
+        }
         public static Vector Faceforward(Vector v1, Vector v2)
         {
             return (Dot(v1, v2) < 0.0f) ? -v1 : v1;
-        } 
+        }
         public static Vector Faceforward(Vector v, Normal n)
         {
             return (Dot(v, n) < 0.0f) ? -v : v;
+        }
+        public static BBox Union(BBox b, Point p)
+        {
+            BBox ret = new BBox();
+            ret.pMin.x = Math.Min(b.pMin.x, p.x);
+            ret.pMin.y = Math.Min(b.pMin.y, p.y);
+            ret.pMin.z = Math.Min(b.pMin.z, p.z);
+            ret.pMax.x = Math.Max(b.pMax.x, p.x);
+            ret.pMax.y = Math.Max(b.pMax.y, p.y);
+            ret.pMax.z = Math.Max(b.pMax.z, p.z);
+            return ret;
+        }
+        public static BBox Union(BBox b, BBox b2)
+        {
+            BBox ret = new BBox();
+            ret.pMin.x = Math.Min(b.pMin.x, b2.pMin.x);
+            ret.pMin.y = Math.Min(b.pMin.y, b2.pMin.y);
+            ret.pMin.z = Math.Min(b.pMin.z, b2.pMin.z);
+            ret.pMax.x = Math.Max(b.pMax.x, b2.pMax.x);
+            ret.pMax.y = Math.Max(b.pMax.y, b2.pMax.y);
+            ret.pMax.z = Math.Max(b.pMax.z, b2.pMax.z);
+            return ret;
+        }
+
+        public static Vector SphericalDirection(float sintheta,
+                                 float costheta, float phi)
+        {
+            return new Vector(sintheta * (float)Math.Cos(phi),
+                          sintheta * (float)Math.Sin(phi),
+                          costheta);
+        }
+
+
+        public static Vector SphericalDirection(float sintheta, float costheta,
+                                         float phi, Vector x,
+                                           Vector y, Vector z)
+        {
+            return sintheta * (float)Math.Cos(phi) * x +
+                   sintheta * (float)Math.Sin(phi) * y + costheta * z;
+        }
+
+
+        public static float SphericalTheta(Vector v)
+        {
+            return (float)Math.Acos(Utility.Clamp(v.z, -1.0f, 1.0f));
+        }
+
+
+        public static float SphericalPhi(Vector v)
+        {
+            float p = (float)Math.Atan2(v.y, v.x);
+            return (float)((p < 0.0f) ? p + 2.0f * Math.PI : p);
         }
 
     }

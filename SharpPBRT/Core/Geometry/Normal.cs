@@ -53,7 +53,7 @@ namespace SharpPBRT.Core.Geometry
         }
         public static Normal operator /(Normal n, float f)
         {
-            if (f == 0) throw new InvalidOperationException();
+            if (f == 0.0f) throw new InvalidOperationException();
             float inv = 1.0f / f;
             return new Normal(n.x * inv, n.y * inv, n.z * inv);
         }
@@ -65,7 +65,18 @@ namespace SharpPBRT.Core.Geometry
         {
             return (float)Math.Sqrt(LengthSquared());
         }
+        public float this[int index]
+        {
+            get
+            {
+                if (index < 0 || index > 2) throw new ArgumentException();
 
+                if (index == 0) return x;
+                else if (index == 1) return y;
+                else if (index == 2) return z;
+                else return 0;
+            }
+        }
         public override bool Equals(object obj)
         {
             if (obj == null)
